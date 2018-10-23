@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: crystal-www-example
+  labels:
+    app: crystal-www-example
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: crystal-www-example
+  template:
+    metadata:
+      labels:
+        app: crystal-www-example
+    spec:
+      containers:
+      - name: crystal-www-example
+        image: gcr.io/k8s-learn-220312/crystal-www-example:latest
+        ports:
+        - containerPort: 8080
+
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: crystal-www-example
+spec:
+  selector:
+    app: crystal-www-example
+  type: LoadBalancer
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
